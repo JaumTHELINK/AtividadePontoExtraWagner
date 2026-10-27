@@ -1,0 +1,48 @@
+### Teste 1: Tentar criar evento sem capacidade (deve ser barrado pelo Joi - status 400)
+POST http://localhost:3000/events
+Content-Type: application/json
+
+{
+  "title": "Workshop de Node.js e Sequelize",
+  "date": "2026-11-20T14:00:00.000Z"
+}
+
+### Teste 2: Criar um evento válido com capacidade para 2 vagas (status 201)
+POST http://localhost:3000/events
+Content-Type: application/json
+
+{
+  "title": "Imersão em Node.js e Express",
+  "date": "2026-12-10T19:00:00.000Z",
+  "capacity": 2
+}
+
+### Teste 3a: Registrar o 1º participante no evento criado (status 201)
+POST http://localhost:3000/events/1/register
+Content-Type: application/json
+
+{
+  "participantName": "Maria Silva",
+  "email": "maria.silva@example.com"
+}
+
+### Teste 3b: Registrar o 2º participante no evento (status 201)
+POST http://localhost:3000/events/1/register
+Content-Type: application/json
+
+{
+  "participantName": "João Santos",
+  "email": "joao.santos@example.com"
+}
+
+### Teste 4: Tentar registrar o 3º participante - evento lotado (deve retornar status 403)
+POST http://localhost:3000/events/1/register
+Content-Type: application/json
+
+{
+  "participantName": "Carlos Souza",
+  "email": "carlos.souza@example.com"
+}
+
+### Teste 5: Listar todos os eventos e verificar contagem de inscrições (status 200)
+GET http://localhost:3000/events

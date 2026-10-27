@@ -1,0 +1,123 @@
+{
+  "info": {
+    "name": "API Gestão de Eventos (Event Manager)",
+    "description": "Coleção de testes para a atividade de Ponto Extra da Unicatólica",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Criar Evento Sem Capacidade (Falha Joi - 400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Workshop de Node.js e Sequelize\",\n  \"date\": \"2026-11-20T14:00:00.000Z\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/events",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["events"]
+        }
+      }
+    },
+    {
+      "name": "2. Criar Evento Válido (Capacidade 2 - 201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Imersão em Node.js e Express\",\n  \"date\": \"2026-12-10T19:00:00.000Z\",\n  \"capacity\": 2\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/events",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["events"]
+        }
+      }
+    },
+    {
+      "name": "3a. Registrar Participante 1 (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"participantName\": \"Maria Silva\",\n  \"email\": \"maria.silva@example.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/events/1/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["events", "1", "register"]
+        }
+      }
+    },
+    {
+      "name": "3b. Registrar Participante 2 (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"participantName\": \"João Santos\",\n  \"email\": \"joao.santos@example.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/events/1/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["events", "1", "register"]
+        }
+      }
+    },
+    {
+      "name": "4. Registrar 3º Participante (Lotado - 403)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"participantName\": \"Carlos Souza\",\n  \"email\": \"carlos.souza@example.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/events/1/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["events", "1", "register"]
+        }
+      }
+    },
+    {
+      "name": "5. Listar Eventos com Contagem (200)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/events",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["events"]
+        }
+      }
+    }
+  ]
+}
