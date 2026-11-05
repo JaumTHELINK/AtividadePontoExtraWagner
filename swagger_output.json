@@ -1,0 +1,209 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API RESTful - Sistema de Gestão de Eventos",
+    "description": "Documentação interativa gerada automaticamente com Swagger Autogen para a API de Gestão de Eventos (Unicatólica - Parte 2)",
+    "version": "2.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Eventos",
+      "description": "Endpoints para criação, listagem e inscrição em eventos"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/events": {
+      "post": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Criação de um novo evento",
+        "description": "Cria um novo evento com dados validados via Joi.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Corpo da requisição com os dados do evento",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Imersão em Node.js e Express"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2026-12-10T19:00:00.000Z"
+                },
+                "capacity": {
+                  "type": "number",
+                  "example": 50
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Evento criado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Imersão em Node.js e Express"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2026-12-10T19:00:00.000Z"
+                },
+                "capacity": {
+                  "type": "number",
+                  "example": 50
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2026-11-05T00:00:00.000Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2026-11-05T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação nos dados fornecidos"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Listagem de eventos",
+        "description": "Retorna todos os eventos cadastrados juntamente com a contagem de inscrições.",
+        "responses": {
+          "200": {
+            "description": "Lista de eventos retornada com sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Imersão em Node.js e Express"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2026-12-10T19:00:00.000Z"
+                  },
+                  "capacity": {
+                    "type": "number",
+                    "example": 50
+                  },
+                  "registrationsCount": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "registrations": {
+                    "type": "array",
+                    "example": [],
+                    "items": {}
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/events/{id}/register": {
+      "post": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Inscrição de participante em evento",
+        "description": "Registra um participante no evento informado pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do evento"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados do participante a ser inscrito",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "participantName": {
+                  "type": "string",
+                  "example": "Maria Silva"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "maria.silva@example.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Inscrição realizada com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação nos dados do participante"
+          },
+          "403": {
+            "description": "O evento está lotado. Limite máximo de vagas atingido."
+          },
+          "404": {
+            "description": "Evento não encontrado"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

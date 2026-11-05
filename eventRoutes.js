@@ -6,6 +6,35 @@ const { validateEvent, validateRegistration } = require('./validation');
 
 // 1. Rota POST /events: Cria um novo evento com dados validados
 router.post('/events', validateEvent, async (req, res) => {
+  /*
+    #swagger.tags = ['Eventos']
+    #swagger.summary = 'Criação de um novo evento'
+    #swagger.description = 'Cria um novo evento com dados validados via Joi.'
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Corpo da requisição com os dados do evento',
+      required: true,
+      schema: {
+        title: 'Imersão em Node.js e Express',
+        date: '2026-12-10T19:00:00.000Z',
+        capacity: 50
+      }
+    }
+    #swagger.responses[201] = {
+      description: 'Evento criado com sucesso',
+      schema: {
+        id: 1,
+        title: 'Imersão em Node.js e Express',
+        date: '2026-12-10T19:00:00.000Z',
+        capacity: 50,
+        createdAt: '2026-11-05T00:00:00.000Z',
+        updatedAt: '2026-11-05T00:00:00.000Z'
+      }
+    }
+    #swagger.responses[400] = {
+      description: 'Erro de validação nos dados fornecidos'
+    }
+  */
   try {
     const { title, date, capacity } = req.body;
     const newEvent = await Event.create({ title, date, capacity });
@@ -17,6 +46,22 @@ router.post('/events', validateEvent, async (req, res) => {
 
 // 2. Rota GET /events: Retorna todos os eventos com a contagem de inscrições (Desafio)
 router.get('/events', async (req, res) => {
+  /*
+    #swagger.tags = ['Eventos']
+    #swagger.summary = 'Listagem de eventos'
+    #swagger.description = 'Retorna todos os eventos cadastrados juntamente com a contagem de inscrições.'
+    #swagger.responses[200] = {
+      description: 'Lista de eventos retornada com sucesso',
+      schema: [{
+        id: 1,
+        title: 'Imersão em Node.js e Express',
+        date: '2026-12-10T19:00:00.000Z',
+        capacity: 50,
+        registrationsCount: 2,
+        registrations: []
+      }]
+    }
+  */
   try {
     const events = await Event.findAll({
       include: [
@@ -29,7 +74,7 @@ router.get('/events', async (req, res) => {
     });
 
     const eventsWithCount = events.map(event => {
-      const eventJson = event.toJSON();
+      const eventJson = typeof event.toJSON === 'function' ? event.toJSON() : event;
       return {
         ...eventJson,
         registrationsCount: eventJson.registrations ? eventJson.registrations.length : 0
@@ -44,6 +89,38 @@ router.get('/events', async (req, res) => {
 
 // 3. Rota POST /events/:id/register: Registra um participante no evento
 router.post('/events/:id/register', validateRegistration, async (req, res) => {
+  /*
+    #swagger.tags = ['Eventos']
+    #swagger.summary = 'Inscrição de participante em evento'
+    #swagger.description = 'Registra um participante no evento informado pelo ID.'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID do evento',
+      required: true,
+      type: 'integer'
+    }
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Dados do participante a ser inscrito',
+      required: true,
+      schema: {
+        participantName: 'Maria Silva',
+        email: 'maria.silva@example.com'
+      }
+    }
+    #swagger.responses[201] = {
+      description: 'Inscrição realizada com sucesso'
+    }
+    #swagger.responses[400] = {
+      description: 'Erro de validação nos dados do participante'
+    }
+    #swagger.responses[403] = {
+      description: 'O evento está lotado. Limite máximo de vagas atingido.'
+    }
+    #swagger.responses[404] = {
+      description: 'Evento não encontrado'
+    }
+  */
   try {
     const { id } = req.params;
     const { participantName, email } = req.body;
