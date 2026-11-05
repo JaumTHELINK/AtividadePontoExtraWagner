@@ -25,3 +25,4 @@ const routes = ['./eventRoutes.js'];
 swaggerAutogen(outputFile, routes, doc).then(() => {
   console.log('Documentação Swagger gerada com sucesso em swagger_output.json!');
 });
+
